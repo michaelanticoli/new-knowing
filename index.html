@@ -1,527 +1,1013 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sessions — Eclipse Season</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&family=Playfair+Display:wght@500;600&family=DM+Sans:wght@400;500&family=Work+Sans:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sessions — Eclipse Season</title>
 
-    :root {
-      --night: #0A0A0A;
-      --hairline: #262626;
-      --ivory: #EFECE7;
-      --body: #C9C3B9;
-      --muted: #8C857B;
-      --teal: #1DC9A6;
-      --teal-glow: rgba(29, 201, 166, 0.26);
-      --gold: #C9A95E;
-      --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&family=Playfair+Display:wght@500;600&family=DM+Sans:wght@400;500&family=Work+Sans:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
-    * {
-      box-sizing: border-box;
-    }
+:root{
+  --night:#0A0A0A;
+  --hairline:#262626;
+  --ivory:#EFECE7;
+  --body:#C9C3B9;
+  --muted:#8C857B;
+  --teal:#1DC9A6;
+  --teal-glow:rgba(29,201,166,0.26);
+  --gold:#C9A95E;
+  --ease:cubic-bezier(0.2,0.8,0.2,1);
+}
 
-    html {
-      scroll-behavior: smooth;
-    }
+*{
+  box-sizing:border-box;
+}
 
-    body {
-      margin: 0;
-      background: var(--night);
-      color: var(--ivory);
-      font-family: 'DM Sans', sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
+html{
+  scroll-behavior:smooth;
+}
 
-    /* ---------- ambient background ---------- */
-    .glow {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background:
-        radial-gradient(620px 460px at 84% 6%, rgba(29, 201, 166, 0.11), transparent 62%),
-        radial-gradient(520px 420px at 6% 92%, rgba(201, 169, 94, 0.05), transparent 60%);
-      animation: orbBreathe 20s var(--ease) infinite;
-    }
+body{
+  margin:0;
+  background:var(--night);
+  color:var(--ivory);
+  font-family:'DM Sans',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
 
-    @keyframes orbBreathe {
+/* =========================================================
+   AMBIENT BACKGROUND
+========================================================= */
 
-      0%,
-      100% {
-        opacity: 0.85;
-        transform: scale(1);
-      }
+.glow{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  background:
+    radial-gradient(
+      620px 460px at 84% 6%,
+      rgba(29,201,166,0.11),
+      transparent 62%
+    ),
+    radial-gradient(
+      520px 420px at 6% 92%,
+      rgba(201,169,94,0.05),
+      transparent 60%
+    );
+  animation:orbBreathe 20s var(--ease) infinite;
+}
 
-      50% {
-        opacity: 1;
-        transform: scale(1.04);
-      }
-    }
+@keyframes orbBreathe{
+  0%,100%{
+    opacity:.85;
+    transform:scale(1);
+  }
 
-    /* ---------- logo header ---------- */
-    .brandbar {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: center;
-      padding: 40px 28px 0;
-    }
+  50%{
+    opacity:1;
+    transform:scale(1.04);
+  }
+}
 
-    .brandbar img {
-      height: 22px;
-      width: auto;
-      filter: invert(1) brightness(1.15);
-      opacity: 0;
-      animation: fadeRise 0.9s var(--ease) forwards;
-      animation-delay: 0.05s;
-    }
+/* =========================================================
+   LOGO
+========================================================= */
 
-    /* ---------- hero image ---------- */
-    .hero {
-      position: relative;
-      z-index: 1;
-      max-width: 680px;
-      margin: 28px auto 0;
-      padding: 0 28px;
-    }
+.brandbar{
+  position:relative;
+  z-index:1;
+  display:flex;
+  justify-content:center;
+  padding:40px 28px 0;
+}
 
-    .hero-frame {
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 1px solid var(--hairline);
-      opacity: 0;
-      animation: fadeRise 1s var(--ease) forwards;
-      animation-delay: 0.1s;
-    }
+.brandbar img{
+  height:22px;
+  width:auto;
+  filter:invert(1) brightness(1.15);
+  opacity:0;
+  animation:fadeRise .9s var(--ease) forwards;
+  animation-delay:.05s;
+}
 
-    .hero-frame img {
-      display: block;
-      width: 100%;
-      height: auto;
-      max-height: 62vh;
-      object-fit: cover;
-      object-position: center 30%;
-    }
+/* =========================================================
+   HERO
+========================================================= */
 
-    .hero-frame::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(10, 10, 10, 0) 45%, rgba(10, 10, 10, 0.94) 100%);
-    }
+.hero{
+  position:relative;
+  z-index:1;
+  max-width:680px;
+  margin:28px auto 0;
+  padding:0 28px;
+}
 
-    .hero-caption {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 28px 30px 26px;
-      z-index: 2;
-    }
+.hero-frame{
+  position:relative;
+  border-radius:20px;
+  overflow:hidden;
+  border:1px solid var(--hairline);
+  opacity:0;
+  animation:fadeRise 1s var(--ease) forwards;
+  animation-delay:.1s;
+}
 
-    .wrap {
-      position: relative;
-      z-index: 1;
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 40px 28px 160px;
-    }
+.hero-frame img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:62vh;
+  object-fit:cover;
+  object-position:center 30%;
+}
 
-    /* ---------- reveal system ---------- */
-    .reveal {
-      opacity: 0;
-      transform: translateY(18px);
-    }
+.hero-frame::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10,10,10,0) 45%,
+      rgba(10,10,10,.94) 100%
+    );
+}
 
-    .reveal.in {
-      animation: fadeRise 0.9s var(--ease) forwards;
-    }
+.hero-caption{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:28px 30px 26px;
+  z-index:2;
+}
 
-    @keyframes fadeRise {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+.wrap{
+  position:relative;
+  z-index:1;
+  max-width:680px;
+  margin:0 auto;
+  padding:40px 28px 160px;
+}
 
-    @media (prefers-reduced-motion: reduce) {
+/* =========================================================
+   REVEAL SYSTEM
+========================================================= */
 
-      .reveal,
-      .brandbar img,
-      .hero-frame {
-        opacity: 1 !important;
-        transform: none !important;
-        animation: none !important;
-      }
+.reveal{
+  opacity:0;
+  transform:translateY(18px);
+}
 
-      .glow {
-        animation: none;
-      }
+.reveal.in{
+  animation:fadeRise .9s var(--ease) forwards;
+}
 
-      .cta {
-        transition: none !important;
-      }
-    }
+@keyframes fadeRise{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
 
-    /* ---------- eyebrow / live dot ---------- */
-    .eyebrow {
-      font-family: 'Work Sans', sans-serif;
-      font-weight: 600;
-      font-size: 13px;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--teal);
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
+@media(prefers-reduced-motion:reduce){
 
-    .dot {
-      position: relative;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--teal);
-      flex-shrink: 0;
-    }
+  .reveal,
+  .brandbar img,
+  .hero-frame{
+    opacity:1 !important;
+    transform:none !important;
+    animation:none !important;
+  }
 
-    .dot::after {
-      content: "";
-      position: absolute;
-      inset: -6px;
-      border-radius: 50%;
-      border: 1px solid var(--teal);
-      animation: pingPulse 2.6s var(--ease) infinite;
-    }
+  .glow,
+  .eclipse-orbit,
+  .eclipse-corona,
+  .eclipse-core,
+  .eclipse-glint{
+    animation:none !important;
+  }
 
-    @keyframes pingPulse {
-      0% {
-        transform: scale(0.6);
-        opacity: 0.9;
-      }
+  .cta{
+    transition:none !important;
+  }
+}
 
-      80% {
-        transform: scale(2.2);
-        opacity: 0;
-      }
+/* =========================================================
+   EYEBROW
+========================================================= */
 
-      100% {
-        opacity: 0;
-      }
-    }
+.eyebrow{
+  font-family:'Work Sans',sans-serif;
+  font-weight:600;
+  font-size:13px;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--teal);
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
 
-    /* ---------- type ---------- */
-    h1 {
-      margin: 14px 0 0;
-      font-family: 'Inter', sans-serif;
-      font-weight: 200;
-      letter-spacing: -0.02em;
-      font-size: clamp(30px, 5.4vw, 44px);
-      line-height: 1.18;
-      color: var(--ivory);
-    }
+.dot{
+  position:relative;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--teal);
+  flex-shrink:0;
+}
 
-    .lede {
-      margin-top: 22px;
-      font-size: 17px;
-      line-height: 1.65;
-      color: var(--body);
-      max-width: 640px;
-    }
+.dot::after{
+  content:"";
+  position:absolute;
+  inset:-6px;
+  border-radius:50%;
+  border:1px solid var(--teal);
+  animation:pingPulse 2.6s var(--ease) infinite;
+}
 
-    .section {
-      margin-top: 56px;
-      padding-top: 32px;
-      border-top: 1px solid var(--hairline);
-    }
+@keyframes pingPulse{
 
-    .section .label {
-      font-family: 'Work Sans', sans-serif;
-      font-weight: 600;
-      font-size: 12px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 16px;
-    }
+  0%{
+    transform:scale(.6);
+    opacity:.9;
+  }
 
-    .section p {
-      font-size: 16px;
-      line-height: 1.7;
-      color: var(--body);
-      max-width: 640px;
-    }
+  80%{
+    transform:scale(2.2);
+    opacity:0;
+  }
 
-    .section p+p {
-      margin-top: 14px;
-    }
+  100%{
+    opacity:0;
+  }
+}
 
-    /* ---------- eclipse art banner ---------- */
-    .art-banner {
-      margin-top: 56px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--hairline);
-      position: relative;
-      height: 200px;
-    }
+/* =========================================================
+   TYPE
+========================================================= */
 
-    .art-banner img,
-    .art-banner video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 55%;
-      display: block;
-    }
+h1{
+  margin:14px 0 0;
+  font-family:'Inter',sans-serif;
+  font-weight:200;
+  letter-spacing:-.02em;
+  font-size:clamp(30px,5.4vw,44px);
+  line-height:1.18;
+  color:var(--ivory);
+}
 
-    .art-banner::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(10, 10, 10, 0.05), rgba(10, 10, 10, 0.55));
-    }
+.lede{
+  margin-top:22px;
+  font-size:17px;
+  line-height:1.65;
+  color:var(--body);
+  max-width:640px;
+}
 
-    /* ---------- offer ---------- */
-    .offer {
-      margin-top: 56px;
-      padding-top: 36px;
-      border-top: 1px solid var(--hairline);
-    }
+.section{
+  margin-top:56px;
+  padding-top:32px;
+  border-top:1px solid var(--hairline);
+}
 
-    .offer-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 24px;
-    }
+.section .label{
+  font-family:'Work Sans',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:16px;
+}
 
-    .offer .label {
-      font-family: 'Work Sans', sans-serif;
-      font-size: 12px;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
+.section p{
+  font-size:16px;
+  line-height:1.7;
+  color:var(--body);
+  max-width:640px;
+}
 
-    .offer .readout {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 21px;
-      letter-spacing: 0.02em;
-    }
+.section p + p{
+  margin-top:14px;
+}
 
-    .offer .readout .price {
-      color: var(--gold);
-      font-size: 29px;
-    }
+/* =========================================================
+   ANIMATED ECLIPSE
+========================================================= */
 
-    .cta {
-      display: inline-block;
-      font-family: 'Work Sans', sans-serif;
-      font-weight: 600;
-      font-size: 15px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #06110D;
-      background: var(--teal);
-      border: none;
-      border-radius: 999px;
-      padding: 20px 38px;
-      white-space: nowrap;
-      box-shadow: 0 0 26px 3px var(--teal-glow);
-      text-decoration: none;
-      cursor: pointer;
-      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
-    }
+.art-banner{
+  margin-top:56px;
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid var(--hairline);
+  position:relative;
+  height:200px;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(29,201,166,.06),
+      transparent 45%
+    ),
+    #070909;
+  isolation:isolate;
+}
 
-    .cta:hover {
-      box-shadow: 0 0 40px 6px var(--teal-glow);
-    }
+/* subtle moving light field */
 
-    .cta:active {
-      transform: scale(0.97);
-    }
+.art-banner::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(29,201,166,.10),
+      transparent 17%
+    ),
+    radial-gradient(
+      circle at 30% 70%,
+      rgba(201,169,94,.06),
+      transparent 20%
+    );
+  filter:blur(35px);
+  animation:ambientDrift 14s ease-in-out infinite alternate;
+  z-index:-2;
+}
 
-    .cta:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 4px rgba(29, 201, 166, 0.35);
-    }
+@keyframes ambientDrift{
 
-    .window {
-      margin-top: 18px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 12px;
-      color: var(--muted);
-    }
+  0%{
+    transform:translate(-4%,-2%) scale(1);
+  }
 
-    .footer {
-      margin-top: 30px;
-      text-align: right;
-    }
+  100%{
+    transform:translate(4%,2%) scale(1.08);
+  }
+}
 
-    .footer .fine {
-      font-family: 'Work Sans', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #514C46;
-    }
+/* eclipse system */
 
-    /* ---------- sticky mini bar ---------- */
-    .stickybar {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 16px 24px;
-      background: rgba(10, 10, 10, 0.86);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid var(--hairline);
-      transform: translateY(100%);
-      transition: transform 0.5s var(--ease);
-    }
+.eclipse{
+  position:absolute;
+  width:150px;
+  height:150px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+}
 
-    .stickybar.show {
-      transform: translateY(0);
-    }
+/* orbital rings */
 
-    .stickybar .price {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 14px;
-      color: var(--ivory);
-    }
+.eclipse-orbit{
+  position:absolute;
+  inset:-26px;
+  border:1px solid rgba(29,201,166,.15);
+  border-radius:50%;
+  transform:rotate(-18deg) scaleY(.34);
+  animation:orbitFloat 9s ease-in-out infinite;
+}
 
-    .stickybar .price span {
-      color: var(--gold);
-    }
+.eclipse-orbit::before{
+  content:"";
+  position:absolute;
+  inset:16px;
+  border:1px solid rgba(201,169,94,.10);
+  border-radius:50%;
+}
 
-    .stickybar .cta {
-      padding: 12px 24px;
-      font-size: 13px;
-      box-shadow: 0 0 18px 2px var(--teal-glow);
-    }
-  </style>
+@keyframes orbitFloat{
+
+  0%,100%{
+    transform:rotate(-18deg) scaleY(.34) scale(1);
+    opacity:.55;
+  }
+
+  50%{
+    transform:rotate(-12deg) scaleY(.34) scale(1.04);
+    opacity:1;
+  }
+}
+
+/* corona */
+
+.eclipse-corona{
+  position:absolute;
+  inset:-24px;
+  border-radius:50%;
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent,
+      rgba(29,201,166,.28),
+      transparent 18%,
+      rgba(201,169,94,.18),
+      transparent 42%,
+      rgba(29,201,166,.22),
+      transparent 70%,
+      rgba(201,169,94,.14),
+      transparent
+    );
+  filter:blur(8px);
+  animation:coronaRotate 18s linear infinite;
+}
+
+@keyframes coronaRotate{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* glowing edge */
+
+.eclipse-glint{
+  position:absolute;
+  inset:-7px;
+  border-radius:50%;
+  background:
+    radial-gradient(
+      circle,
+      transparent 57%,
+      rgba(29,201,166,.18) 62%,
+      rgba(29,201,166,.03) 69%,
+      transparent 73%
+    );
+  animation:glintPulse 5s ease-in-out infinite;
+}
+
+@keyframes glintPulse{
+
+  0%,100%{
+    opacity:.55;
+    transform:scale(1);
+  }
+
+  50%{
+    opacity:1;
+    transform:scale(1.035);
+  }
+}
+
+/* black moon */
+
+.eclipse-core{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:
+    radial-gradient(
+      circle at 34% 30%,
+      #171717,
+      #050505 55%,
+      #000 100%
+    );
+  box-shadow:
+    0 0 18px rgba(29,201,166,.14),
+    0 0 55px rgba(29,201,166,.08);
+  animation:moonBreathe 7s ease-in-out infinite;
+}
+
+@keyframes moonBreathe{
+
+  0%,100%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.015);
+  }
+}
+
+/* tiny eclipse highlight */
+
+.eclipse-core::after{
+  content:"";
+  position:absolute;
+  width:4px;
+  height:4px;
+  top:28%;
+  left:30%;
+  border-radius:50%;
+  background:rgba(239,236,231,.28);
+  box-shadow:
+    28px 22px 0 rgba(239,236,231,.08),
+    -18px 35px 0 rgba(239,236,231,.05);
+}
+
+/* atmospheric grain */
+
+.art-banner::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.18;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
+  mix-blend-mode:screen;
+}
+
+/* eclipse caption */
+
+.eclipse-label{
+  position:absolute;
+  left:24px;
+  bottom:20px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:rgba(239,236,231,.38);
+  z-index:3;
+}
+
+.eclipse-label span{
+  color:var(--teal);
+}
+
+/* =========================================================
+   OFFER
+========================================================= */
+
+.offer{
+  margin-top:56px;
+  padding-top:36px;
+  border-top:1px solid var(--hairline);
+}
+
+.offer-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:24px;
+}
+
+.offer .label{
+  font-family:'Work Sans',sans-serif;
+  font-size:12px;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+.offer .readout{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:21px;
+  letter-spacing:.02em;
+}
+
+.offer .readout .price{
+  color:var(--gold);
+  font-size:29px;
+}
+
+.cta{
+  display:inline-block;
+  font-family:'Work Sans',sans-serif;
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:#06110D;
+  background:var(--teal);
+  border:none;
+  border-radius:999px;
+  padding:20px 38px;
+  white-space:nowrap;
+  box-shadow:0 0 26px 3px var(--teal-glow);
+  text-decoration:none;
+  cursor:pointer;
+  transition:
+    transform .35s var(--ease),
+    box-shadow .35s var(--ease);
+}
+
+.cta:hover{
+  box-shadow:
+    0 0 40px 6px var(--teal-glow);
+  transform:translateY(-2px);
+}
+
+.cta:active{
+  transform:scale(.97);
+}
+
+.cta:focus-visible{
+  outline:none;
+  box-shadow:
+    0 0 0 4px rgba(29,201,166,.35);
+}
+
+.window{
+  margin-top:18px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.footer{
+  margin-top:30px;
+  text-align:right;
+}
+
+.footer .fine{
+  font-family:'Work Sans',sans-serif;
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:#514C46;
+}
+
+/* =========================================================
+   STICKY BAR
+========================================================= */
+
+.stickybar{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:16px 24px;
+  background:rgba(10,10,10,.86);
+  backdrop-filter:blur(10px);
+  border-top:1px solid var(--hairline);
+  transform:translateY(100%);
+  transition:transform .5s var(--ease);
+}
+
+.stickybar.show{
+  transform:translateY(0);
+}
+
+.stickybar .price{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:14px;
+  color:var(--ivory);
+}
+
+.stickybar .price span{
+  color:var(--gold);
+}
+
+.stickybar .cta{
+  padding:12px 24px;
+  font-size:13px;
+  box-shadow:0 0 18px 2px var(--teal-glow);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+  .brandbar{
+    padding-top:28px;
+  }
+
+  .hero{
+    margin-top:22px;
+    padding:0 18px;
+  }
+
+  .wrap{
+    padding-left:18px;
+    padding-right:18px;
+    padding-bottom:130px;
+  }
+
+  .hero-caption{
+    padding:22px;
+  }
+
+  .art-banner{
+    height:190px;
+  }
+
+  .eclipse{
+    transform:translate(-50%,-50%) scale(.88);
+  }
+
+  .offer-row{
+    align-items:stretch;
+  }
+
+  .offer-row .cta{
+    width:100%;
+    text-align:center;
+  }
+
+  .stickybar{
+    padding:12px 16px;
+  }
+
+  .stickybar .price{
+    font-size:11px;
+  }
+
+  .stickybar .cta{
+    padding:12px 18px;
+    font-size:11px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="glow"></div>
+<div class="glow"></div>
 
-  <div class="brandbar">
-    <img src="assets/logo.png" alt="Moontuner">
-  </div>
+<!-- =======================================================
+     BRAND
+======================================================= -->
 
-  <div class="hero">
-    <div class="hero-frame">
-      <img src="assets/portrait.jpg" alt="Reading in progress, tarot spread and candles">
-      <div class="hero-caption">
-        <div class="eyebrow">
-          <span class="dot"></span>
-          Eclipse season &nbsp;·&nbsp; Sessions open Sept 1&ndash;14
-        </div>
+<div class="brandbar">
+  <img src="assets/logo.png" alt="Moontuner">
+</div>
+
+<!-- =======================================================
+     HERO
+======================================================= -->
+
+<div class="hero">
+
+  <div class="hero-frame">
+
+    <img
+      src="assets/portrait.jpg"
+      alt="Reading in progress, tarot spread and candles"
+    >
+
+    <div class="hero-caption">
+
+      <div class="eyebrow">
+        <span class="dot"></span>
+        Eclipse season &nbsp;·&nbsp; Sessions open Sept 1&ndash;14
       </div>
+
     </div>
+
   </div>
 
-  <div class="wrap">
+</div>
 
-    <h1 class="reveal in" style="animation-delay:0.2s">I don't usually open my books like this.</h1>
+<!-- =======================================================
+     CONTENT
+======================================================= -->
 
-    <p class="lede reveal in" style="animation-delay:0.32s">If you've ever wondered what it's like to work with me, or
-      you've been meaning to book another session, this is the best window you're going to get. I'm in the middle of
-      leaving Los Angeles &mdash; packing up an apartment, donating what I can't keep, closing a chapter faster than I
-      expected to. To help cover what that's costing, I'm opening a limited number of sessions for the next two weeks.
+<div class="wrap">
+
+  <h1
+    class="reveal in"
+    style="animation-delay:.2s"
+  >
+    I don't usually open my books like this.
+  </h1>
+
+  <p
+    class="lede reveal in"
+    style="animation-delay:.32s"
+  >
+    If you've ever wondered what it's like to work with me, or you've been meaning to book another session, this is the best window you're going to get. I'm in the middle of leaving Los Angeles &mdash; packing up an apartment, donating what I can't keep, closing a chapter faster than I expected to. To help cover what that's costing, I'm opening a limited number of sessions for the next two weeks.
+  </p>
+
+  <!-- =====================================================
+       SESSION
+  ====================================================== -->
+
+  <div class="section reveal">
+
+    <div class="label">
+      The Session
+    </div>
+
+    <p>
+      Each session is a reading &mdash; your birth chart or the cards, whichever you'd rather work with &mdash; paired with an original piece of music built from your own astrology. You'll choose what to focus on when you book.
     </p>
 
-    <div class="section reveal">
-      <div class="label">The Session</div>
-      <p>Each session is a reading &mdash; your birth chart or the cards, whichever you'd rather work with &mdash;
-        paired with an original piece of music built from your own astrology. You'll choose what to focus on when you
-        book.</p>
+  </div>
+
+  <!-- =====================================================
+       ANIMATED ECLIPSE
+  ====================================================== -->
+
+  <div class="art-banner reveal">
+
+    <div class="eclipse">
+
+      <div class="eclipse-orbit"></div>
+
+      <div class="eclipse-corona"></div>
+
+      <div class="eclipse-glint"></div>
+
+      <div class="eclipse-core"></div>
+
     </div>
 
-    <div class="art-banner reveal">
-      <iframe src="https://drive.google.com/file/d/1WEmbem-jgOAaMBYSr7UYTqxdqOSgkD-3/preview" width="100%" height="500"
-        allow="autoplay" allowfullscreen>
-      </iframe>
+    <div class="eclipse-label">
+      <span>●</span>&nbsp;&nbsp; Eclipse / 2026
     </div>
 
-    <div class="section reveal">
-      <div class="label">This Eclipse Season</div>
-      <p>This eclipse season opened with a solar eclipse in Leo on August 12th and closes with tonight's lunar eclipse
-        in Pisces &mdash; right as the nodes shift out of the Virgo/Pisces axis that's shaped the last year and a half.
-        Solar eclipses tend to force beginnings before you feel ready for them. Lunar eclipses tend to force endings the
-        same way, bringing things to a head that were already true.</p>
-      <p>A lot of people are feeling that right now &mdash; decisions that have been building for months suddenly
-        needing to be made, roles that don't fit the way they used to, a pull between staying in control and finally
-        letting something go. A session won't hand you an answer. But it can give you a clearer read on your own
-        pattern, which in a season like this tends to be exactly what's missing.</p>
+  </div>
+
+  <!-- =====================================================
+       ECLIPSE SEASON
+  ====================================================== -->
+
+  <div class="section reveal">
+
+    <div class="label">
+      This Eclipse Season
     </div>
 
-    <div class="offer section reveal" id="offer">
-      <div class="offer-row">
-        <div>
-          <div class="label">Book a session</div>
-          <div class="readout"><span class="price">$55</span> &nbsp;·&nbsp; 45 min &nbsp;·&nbsp; Sept 1&ndash;14</div>
+    <p>
+      This eclipse season opened with a solar eclipse in Leo on August 12th and closes with tonight's lunar eclipse in Pisces &mdash; right as the nodes shift out of the Virgo/Pisces axis that's shaped the last year and a half. Solar eclipses tend to force beginnings before you feel ready for them. Lunar eclipses tend to force endings the same way, bringing things to a head that were already true.
+    </p>
+
+    <p>
+      A lot of people are feeling that right now &mdash; decisions that have been building for months suddenly needing to be made, roles that don't fit the way they used to, a pull between staying in control and finally letting something go. A session won't hand you an answer. But it can give you a clearer read on your own pattern, which in a season like this tends to be exactly what's missing.
+    </p>
+
+  </div>
+
+  <!-- =====================================================
+       OFFER
+  ====================================================== -->
+
+  <div
+    class="offer section reveal"
+    id="offer"
+  >
+
+    <div class="offer-row">
+
+      <div>
+
+        <div class="label">
+          Book a session
         </div>
-        <a href="https://app.squareup.com/appointments/book/gxlg47soy9h2pg/LT09Q7KSGAF98/start" class="cta">Book a
-          session →</a>
+
+        <div class="readout">
+          <span class="price">$55</span>
+          &nbsp;·&nbsp;
+          45 min
+          &nbsp;·&nbsp;
+          Sept 1&ndash;14
+        </div>
+
       </div>
-      <div class="window">Sessions run through the new moon on September 10th, and close September 14th.</div>
+
+      <a
+        href="https://app.squareup.com/appointments/book/gxlg47soy9h2pg/LT09Q7KSGAF98/start"
+        class="cta"
+      >
+        Book a session →
+      </a>
+
     </div>
 
-    <div class="footer reveal">
-      <div class="fine">Pay &amp; pick a time on the next screen</div>
+    <div class="window">
+      Sessions run through the new moon on September 10th, and close September 14th.
     </div>
 
   </div>
 
-  <div class="stickybar" id="stickybar">
-    <div class="price">$55 &nbsp;<span>·</span>&nbsp; 45 min &nbsp;<span>·</span>&nbsp; Sept 1&ndash;14</div>
-    <a href="https://app.squareup.com/appointments/book/gxlg47soy9h2pg/LT09Q7KSGAF98/start" class="cta">Book a session
-      →</a>
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
+  <div class="footer reveal">
+
+    <div class="fine">
+      Pay &amp; pick a time on the next screen
+    </div>
+
   </div>
 
-  <script>
-    // Reveal-on-scroll for content that starts below the fold.
-    const revealEls = document.querySelectorAll('.section.reveal, .footer.reveal, .art-banner.reveal');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          entry.target.style.animationDelay = (i * 0.05) + 's';
-          entry.target.classList.add('in');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-    revealEls.forEach(el => io.observe(el));
+</div>
 
-    // Sticky mini-bar appears once the visitor has scrolled well past the hero
-    // and the real offer block is out of view; hides again once it's back on screen.
-    const offerEl = document.getElementById('offer');
-    const bar = document.getElementById('stickybar');
-    function updateBar() {
-      const pastHero = window.scrollY > window.innerHeight * 0.7;
-      const offerRect = offerEl.getBoundingClientRect();
-      const offerVisible = offerRect.top < window.innerHeight && offerRect.bottom > 0;
-      bar.classList.toggle('show', pastHero && !offerVisible);
-    }
-    window.addEventListener('scroll', updateBar);
-    window.addEventListener('resize', updateBar);
-  </script>
+<!-- =======================================================
+     STICKY BOOKING BAR
+======================================================= -->
+
+<div
+  class="stickybar"
+  id="stickybar"
+>
+
+  <div class="price">
+    $55
+    &nbsp;
+    <span>·</span>
+    &nbsp;
+    45 min
+    &nbsp;
+    <span>·</span>
+    &nbsp;
+    Sept 1&ndash;14
+  </div>
+
+  <a
+    href="https://app.squareup.com/appointments/book/gxlg47soy9h2pg/LT09Q7KSGAF98/start"
+    class="cta"
+  >
+    Book a session →
+  </a>
+
+</div>
+
+<script>
+
+/* =========================================================
+   REVEAL ON SCROLL
+========================================================= */
+
+const revealEls = document.querySelectorAll(
+  '.section.reveal, .footer.reveal, .art-banner.reveal'
+);
+
+const io = new IntersectionObserver(
+  (entries) => {
+
+    entries.forEach((entry, i) => {
+
+      if(entry.isIntersecting){
+
+        entry.target.style.animationDelay =
+          (i * 0.05) + 's';
+
+        entry.target.classList.add('in');
+
+        io.unobserve(entry.target);
+
+      }
+
+    });
+
+  },
+  {
+    threshold:.15
+  }
+);
+
+revealEls.forEach(el => io.observe(el));
+
+
+/* =========================================================
+   STICKY BOOKING BAR
+========================================================= */
+
+const offerEl =
+  document.getElementById('offer');
+
+const bar =
+  document.getElementById('stickybar');
+
+function updateBar(){
+
+  const pastHero =
+    window.scrollY >
+    window.innerHeight * .7;
+
+  const offerRect =
+    offerEl.getBoundingClientRect();
+
+  const offerVisible =
+    offerRect.top < window.innerHeight &&
+    offerRect.bottom > 0;
+
+  bar.classList.toggle(
+    'show',
+    pastHero && !offerVisible
+  );
+
+}
+
+window.addEventListener(
+  'scroll',
+  updateBar,
+  { passive:true }
+);
+
+window.addEventListener(
+  'resize',
+  updateBar
+);
+
+updateBar();
+
+</script>
 
 </body>
-
 </html>
